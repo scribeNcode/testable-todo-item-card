@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Todo Card</title>
+  </head>
+  <body>
+    <article data-testid="test-todo-card">
+      <div class="card-header-section">
+        <div class="card-header-title-wrapper">
+          <h2 data-testid="test-todo-title">Finalize Project</h2>
+        </div>
+        <div class="card-header-icons-wrapper">
+          <button data-testid="test-todo-edit-button" aria-label="Edit task">
+            ✏️
+          </button>
+          <button
+            data-testid="test-todo-delete-button"
+            aria-label="Delete task"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+      <div class="status-wrapper">
+        <span data-testid="test-todo-priority">High</span>
+        <span data-testid="test-todo-status">Pending</span>
+      </div>
+      <p data-testid="test-todo-description">
+        Review the budget allocation with the finance team and update the
+        timeline slides for the stakeholder meeting
+      </p>
+    </article>
+
+    <ul role="list">
+      <li>work</li>
+      <li>urgent</li>
+      <li>design</li>
+    </ul>
+    <div class="card-header-section">
+      <div class="time-section">
+            <time datetime="" data-testid="test-todo-due-date">Due April 20,2026</time>
+            <time datetime="" data-testid="test-todo-time-remaining">"Due now!"</time>
+      </div>
+      <div class="task-status-section">
+                      <label for="">Task Completed:<input role="checkbox"
+            data-testid="test-todo-complete-toggle"
+            type="checkbox"
+            name=""
+            id=""
+          /></label>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
