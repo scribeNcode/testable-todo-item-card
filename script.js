@@ -47,6 +47,7 @@ document.getElementById("time-remaining").textContent = message;
 //Complete button event
 // get project title
 const projectTitle = document.getElementById("project-title");
+// get status
 
 const checkbox = document.getElementById("complete-checkbox");
 
@@ -54,8 +55,11 @@ checkbox.addEventListener("change", (e) => {
   if (e.target.checked) {
     projectTitle.classList.add("strike-through");
     document.getElementById("time-remaining").textContent = "Done";
+    ////
+    document.getElementById("todo-status").textContent = "Done";
   } else if (!e.target.checked) {
     projectTitle.classList.remove("strike-through");
     document.getElementById("time-remaining").textContent = message;
+    document.getElementById("todo-status").textContent = "Pending";
   }
 });
