@@ -25,36 +25,37 @@
         </div>
       </div>
       <div class="status-wrapper">
-        <span data-testid="test-todo-priority">High</span>
-        <span data-testid="test-todo-status">Pending</span>
+        <span class="todo-priority-high" data-testid="test-todo-priority">🔥High</span>
+        <span class="todo-status-pending"data-testid="test-todo-status">Pending</span>
       </div>
-      <p data-testid="test-todo-description">
+      <p class="todo-description" data-testid="test-todo-description">
         Review the budget allocation with the finance team and update the
         timeline slides for the stakeholder meeting
       </p>
-      <ul role="list">
+      <ul class="task-tag-wrapper" role="list">
         <li>work</li>
         <li>urgent</li>
         <li>design</li>
       </ul>
-      <div class="card-header-section">
+      <div class="card-footer-section">
         <div class="time-section">
-          <time datetime="" data-testid="test-todo-due-date"
+          <time class="todo-due-date" datetime="" data-testid="test-todo-due-date"
             >Due April 20,2026</time
           >
-          <time datetime="" data-testid="test-todo-time-remaining"
-            >"Due now!"</time
+          <time class="time-remaining" datetime="" data-testid="test-todo-time-remaining"
+            >Due now!</time
           >
         </div>
         <div class="task-status-section">
-          <label for=""
-            >Task Completed:<input
+          <label class="label-for-todo-complete" for=""
+            >Completed</label>
+            <input class="checkbox"
               role="checkbox"
               data-testid="test-todo-complete-toggle"
               type="checkbox"
               name=""
               id=""
-          /></label>
+          />
         </div>
       </div>
     </article>
