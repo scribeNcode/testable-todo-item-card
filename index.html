@@ -3,23 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Todo Card</title>
   </head>
   <body>
+    <div class="app-title"><h1>Todo App</h1></div>
     <article class="app-wrapper" data-testid="test-todo-card">
       <div class="card-header-section">
         <div class="card-header-title-wrapper">
-          <h2 id="project-title" data-testid="test-todo-title">Finalize Project</h2>
+          <h2 id="project-title" data-testid="test-todo-title">
+            Finalize Project
+          </h2>
         </div>
         <div class="card-header-icons-wrapper">
-          <button id="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task">
+          <button
+            id="edit-btn"
+            data-testid="test-todo-edit-button"
+            aria-label="Edit task"
+          >
             ✏️
           </button>
-          <button id="delete-btn"
+          <button
+            id="delete-btn"
             data-testid="test-todo-delete-button"
             aria-label="Delete task"
           >
@@ -28,8 +39,12 @@
         </div>
       </div>
       <div class="status-wrapper">
-        <span class="todo-priority-high" data-testid="test-todo-priority">🔥High</span>
-        <span class="todo-status-pending"data-testid="test-todo-status">Pending</span>
+        <span class="todo-priority-high" data-testid="test-todo-priority"
+          >🔥High</span
+        >
+        <span class="todo-status-pending" data-testid="test-todo-status"
+          >Pending</span
+        >
       </div>
       <p class="todo-description" data-testid="test-todo-description">
         Review the budget allocation with the finance team and update the
@@ -42,22 +57,33 @@
       </ul>
       <div class="card-footer-section">
         <div class="time-section">
-          <time class="todo-due-date" datetime="" data-testid="test-todo-due-date"
+          <time
+            class="todo-due-date"
+            datetime=""
+            data-testid="test-todo-due-date"
             >Due April 20,2026</time
           >
-          <time id="time-remaining" class="time-remaining" datetime="" data-testid="test-todo-time-remaining"
+          <time
+            id="time-remaining"
+            class="time-remaining"
+            datetime=""
+            data-testid="test-todo-time-remaining"
             >Due now!</time
           >
         </div>
         <div class="task-status-section">
           <label class="label-for-todo-complete" for="complete-checkbox"
-            >Completed</label>
-            <input aria-live="polite"  id="complete-checkbox" class="checkbox"
-              role="checkbox"
-              data-testid="test-todo-complete-toggle"
-              type="checkbox"
-              name=""
-              id=""
+            >Completed</label
+          >
+          <input
+            aria-live="polite"
+            id="complete-checkbox"
+            class="checkbox"
+            role="checkbox"
+            data-testid="test-todo-complete-toggle"
+            type="checkbox"
+            name=""
+            id=""
           />
         </div>
       </div>
