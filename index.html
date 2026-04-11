@@ -10,13 +10,13 @@
     <article data-testid="test-todo-card">
       <div class="card-header-section">
         <div class="card-header-title-wrapper">
-          <h2 data-testid="test-todo-title">Finalize Project</h2>
+          <h2 id="project-title" data-testid="test-todo-title">Finalize Project</h2>
         </div>
         <div class="card-header-icons-wrapper">
-          <button data-testid="test-todo-edit-button" aria-label="Edit task">
+          <button id="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task">
             ✏️
           </button>
-          <button
+          <button id="delete-btn"
             data-testid="test-todo-delete-button"
             aria-label="Delete task"
           >
@@ -49,7 +49,7 @@
         <div class="task-status-section">
           <label class="label-for-todo-complete" for=""
             >Completed</label>
-            <input class="checkbox"
+            <input id="complete-checkbox" class="checkbox"
               role="checkbox"
               data-testid="test-todo-complete-toggle"
               type="checkbox"

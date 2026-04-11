@@ -1,3 +1,13 @@
+document.getElementById("edit-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log("edit clicked");
+});
+
+document.getElementById("delete-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log("delete clicked");
+});
+
 // get current time
 let now = new Date();
 
@@ -32,3 +42,19 @@ if (diffInMilSec < 0) {
 
 // Update the Screen
 document.getElementById("time-remaining").textContent = message;
+
+//Complete button event
+// get project title
+const projectTitle = document.getElementById("project-title");
+
+const checkbox = document.getElementById("complete-checkbox");
+
+checkbox.addEventListener("change", (e) => {
+  if (e.target.checked) {
+    projectTitle.classList.add("strike-through");
+    document.getElementById("time-remaining").textContent = "completed";
+  } else if (!e.target.checked) {
+    projectTitle.classList.remove("strike-through");
+    document.getElementById("time-remaining").textContent = message;
+  }
+});
