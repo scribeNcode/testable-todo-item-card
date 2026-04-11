@@ -52,7 +52,7 @@ const checkbox = document.getElementById("complete-checkbox");
 checkbox.addEventListener("change", (e) => {
   if (e.target.checked) {
     projectTitle.classList.add("strike-through");
-    document.getElementById("time-remaining").textContent = "completed";
+    document.getElementById("time-remaining").textContent = "Done";
   } else if (!e.target.checked) {
     projectTitle.classList.remove("strike-through");
     document.getElementById("time-remaining").textContent = message;
