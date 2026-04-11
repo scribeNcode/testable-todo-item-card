@@ -1,0 +1,34 @@
+// get current time
+let now = new Date();
+
+// get dueDate time
+let dueDate = new Date("2026-04-20T12:00:00");
+
+let diffInMilSec = dueDate - now;
+
+// get diffInMin
+let diffInMin = Math.floor(diffInMilSec / (1000 * 60));
+
+// get diffInHour
+let diffInHour = Math.floor(diffInMilSec / (1000 * 60 * 60));
+
+// get diffInDay
+let diffInDay = Math.ceil(diffInHour / 24);
+
+let message = "";
+
+if (diffInMilSec < 0) {
+  let time = Math.abs(diffInHour);
+  message = `Overdue by ${time} hours`;
+} else if (diffInMin <= 0) {
+  message = "Due now!";
+} else if (diffInHour < 24 && diffInDay === 0) {
+  message = "Due later today";
+} else if (diffInDay === 1) {
+  message = "Due tomorrow";
+} else {
+  message = `Due in ${diffInDay} days`;
+}
+
+// Update the Screen
+document.getElementById("time-remaining").textContent = message;
