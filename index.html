@@ -50,26 +50,26 @@
         Review the budget allocation with the finance team and update the
         timeline slides for the stakeholder meeting
       </p>
-      <ul class="task-tag-wrapper" role="list">
-        <li>work</li>
-        <li>urgent</li>
-        <li>design</li>
+      <ul data-testid="test-todo-tags" class="task-tag-wrapper" role="list">
+        <li data-testid="test-todo-tag-work">work</li>
+        <li data-testid="test-todo-tag-urgent">urgent</li>
+        <li data-testid="test-todo-tag-design">design</li>
       </ul>
       <div class="card-footer-section">
         <div class="time-section">
           <time
             class="todo-due-date"
-            datetime=""
+            datetime="2026-04-20"
             data-testid="test-todo-due-date"
             >Due April 20,2026</time
           >
           <time
+            aria-live="polite"
             id="time-remaining"
             class="time-remaining"
             datetime=""
             data-testid="test-todo-time-remaining"
-            >Due now!</time
-          >
+          ></time>
         </div>
         <div class="task-status-section">
           <label class="label-for-todo-complete" for="complete-checkbox"

@@ -1,3 +1,4 @@
+// add event Listener to edit and delete button
 document.getElementById("edit-btn").addEventListener("click", (e) => {
   e.preventDefault();
   console.log("edit clicked");
