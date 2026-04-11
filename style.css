@@ -1,0 +1,112 @@
+* {
+  /* outline: 1px solid red !important; */
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  /* background-color: yellow; */
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+article {
+  margin: 0 auto;
+  width: 90%;
+  /* background-color: red; */
+}
+
+.card-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  /* background-color: red; */
+}
+
+.card-header-icons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+button {
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: transparent;
+  border: 1px solid rgb(129, 126, 126);
+}
+
+.todo-description {
+  padding: 1.5rem 0;
+  color: #605F5E;
+}
+
+.todo-priority-high {
+  background-color: #ecd2da;
+  color: #ed3b36;
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+.todo-status-pending {
+  background-color: #c5caf4;
+  color: #2c42ea;
+  padding: 6px 18px;
+  border-radius: 12px;
+}
+
+.task-tag-wrapper {
+  list-style: none;
+  color: #605F5E;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* background-color: green; */
+  gap: 1rem;
+  margin: 0%;
+}
+
+li {
+  background-color: #ecebea;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+
+.card-footer-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  margin-top: 2rem;
+  /* background-color: palevioletred; */
+}
+
+.time-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.time-remaining{
+  color: red;
+}
+
+.task-status-section{
+  display: flex;
+  /* gap: 1px; */
+}
+.checkbox{
+  width: 2rem;
+}
+
+.todo-due-date, .label-for-todo-complete{
+  color: #605F5E;
+}
