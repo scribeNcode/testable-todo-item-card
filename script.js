@@ -146,7 +146,7 @@ const initApp = () => {
   }
 
 
-  
+
   // Handle Priority
   const prioritySelect = document.getElementById("edit-priority");
   const statusBg = document.getElementById("statusDynamicBackground");
@@ -170,3 +170,28 @@ const initApp = () => {
 };;
 
 initApp();
+// Locate the dropdown and the status text element
+const statusDropdown = document.getElementById("setStatus");
+const statusTextDisplay = document.getElementById("todo-status");
+
+statusDropdown.addEventListener("change", (e) => {
+    const selectedValue = e.target.value;
+    
+    // Only update if a valid option is picked
+    if (selectedValue.length > 0) {
+        statusTextDisplay.textContent = selectedValue;
+        
+        // Logical Sync: If user selects "Done", check the checkbox automatically
+        const checkbox = document.getElementById("complete-checkbox");
+        if (selectedValue === "Done") {
+            checkbox.checked = true;
+            // Trigger the existing updateUI or strike-through logic
+            document.getElementById("project-title").classList.add("strike-through");
+            updateTimeDisplay(targetDate); // From the new time logic
+        } else {
+            checkbox.checked = false;
+            document.getElementById("project-title").classList.remove("strike-through");
+            updateTimeDisplay(targetDate);
+        }
+    }
+});

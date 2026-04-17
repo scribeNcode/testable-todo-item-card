@@ -64,14 +64,16 @@ button {
   padding: 6px 12px;
   border-radius: 12px;
 }
-
 .todo-status-pending {
   display: inline-block;
   background-color: #c5caf4;
   color: #2c42ea;
   padding: 6px 18px;
   border-radius: 12px;
+  width: auto; 
+  text-align: center;
 }
+
 
 /* New Overdue Indicator Style */
 #overdue-indicator {
