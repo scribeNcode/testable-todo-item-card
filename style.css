@@ -124,6 +124,13 @@ li {
   color: #605f5e;
 }
 
+form{
+  display: none;
+}
+
+
+
+
 /* Tablet and laptop */
 
 @media screen and (min-width: 768px) {
@@ -148,4 +155,11 @@ li {
   .todo-description {
     margin-top: 1rem;
   }
+}
+
+
+
+
+.hidden{
+  display: none;
 }
