@@ -1,20 +1,55 @@
-//////////////    CONFIGURATION & CONSTANTS  //////////////////////////
-const MS_PER_HOUR = 1000 * 60 * 60;
+const MS_PER_MINUTE = 1000 * 60;
+const MS_PER_HOUR = MS_PER_MINUTE * 60;
 const MS_PER_DAY = MS_PER_HOUR * 24;
 
-///////////////    PURE LOGIC FUNCTIONS. ////////////////////////////
-const getStatusMessage = (dueDate) => {
+///////////////    NEW LOGIC FUNCTIONS    ////////////////////////////
+const getGranularTime = (dueDate) => {
   const now = new Date();
-  const diffInMs = dueDate - now;
-  const diffInHours = Math.floor(diffInMs / MS_PER_HOUR);
-  const diffInDays = Math.ceil(diffInMs / MS_PER_DAY);
+  const diff = dueDate - now;
+  const absDiff = Math.abs(diff);
 
-  if (diffInMs < 0) return `Overdue by ${Math.abs(diffInHours)} hours`;
-  if (diffInMs < 1000 * 60) return "Due now!";
-  if (diffInHours < 24 && diffInDays === 0) return "Due later today";
-  if (diffInDays === 1) return "Due tomorrow";
+  if (diff < 0) {
+    const hours = Math.floor(absDiff / MS_PER_HOUR);
+    if (hours < 1) return `Overdue by less than an hour`;
+    return `Overdue by ${hours} ${hours === 1 ? "hour" : "hours"}`;
+  }
 
-  return `Due in ${diffInDays} days`;
+  if (absDiff > MS_PER_DAY) {
+    const days = Math.floor(absDiff / MS_PER_DAY);
+    return `Due in ${days} ${days === 1 ? "day" : "days"}`;
+  } else if (absDiff > MS_PER_HOUR) {
+    const hours = Math.floor(absDiff / MS_PER_HOUR);
+    return `Due in ${hours} ${hours === 1 ? "hour" : "hours"}`;
+  } else {
+    const mins = Math.floor(absDiff / MS_PER_MINUTE);
+    return `Due in ${mins} ${mins === 1 ? "minute" : "minutes"}`;
+  }
+};
+
+const updateTimeDisplay = (targetDate) => {
+  const isComplete = document.getElementById("complete-checkbox").checked;
+  const timeEl = document.getElementById("time-remaining");
+  const overdueInd = document.getElementById("overdue-indicator");
+  const statusEl = document.getElementById("todo-status");
+
+  if (isComplete) {
+    timeEl.textContent = "Completed";
+    timeEl.classList.remove("overdue-text");
+    overdueInd.classList.add("hidden");
+    statusEl.textContent = "Done";
+    return;
+  }
+
+  const message = getGranularTime(targetDate);
+  timeEl.textContent = message;
+
+  if (targetDate < new Date()) {
+    timeEl.classList.add("overdue-text");
+    overdueInd.classList.remove("hidden");
+  } else {
+    timeEl.classList.remove("overdue-text");
+    overdueInd.classList.add("hidden");
+  }
 };
 
 ////////////////////////////  UI/DOM ORCHESTRATION /////////////////////////////
@@ -29,160 +64,109 @@ const elements = {
   formEl: document.getElementById("form"),
   cancelEl: document.getElementById("edit-cancelBtn"),
   editSaveBtn: document.getElementById("edit-saveBtn"),
+  expandBtn: document.getElementById("expand-toggle"),
+  collapseBox: document.getElementById("collapsible-section"),
 };
 
-const updateUI = (isComplete, dueDate) => {
-  const { projectTitle, timeRemaining, status } = elements;
-
-  if (isComplete) {
-    projectTitle.classList.add("strike-through");
-    timeRemaining.textContent = "Done";
-    status.textContent = "Done";
-  } else {
-    projectTitle.classList.remove("strike-through");
-    timeRemaining.textContent = getStatusMessage(dueDate);
-    status.textContent = "Pending";
-  }
-};
-
-
-
-///////////////////////////////////// EVENT INITIALIZATION /////////////////////////////
 const initApp = () => {
   let dateValue = "2026-04-20T12:00:00";
   let targetDate = new Date(dateValue);
 
-  // Simple logging listeners
+  // Expand/Collapse Listener
+  elements.expandBtn.addEventListener("click", () => {
+    const isExpanded = elements.collapseBox.classList.toggle("expanded");
+    elements.collapseBox.classList.toggle("collapsed");
+    elements.expandBtn.textContent = isExpanded ? "Show Less" : "Show More";
+    elements.expandBtn.setAttribute("aria-expanded", isExpanded);
+  });
+
+  // Checkbox logic
+  elements.checkbox.addEventListener("change", (e) => {
+    if (e.target.checked) {
+      elements.projectTitle.classList.add("strike-through");
+    } else {
+      elements.projectTitle.classList.remove("strike-through");
+    }
+    updateTimeDisplay(targetDate);
+  });
+
+  // Timer interval (Updates every 60 seconds)
+  setInterval(() => updateTimeDisplay(targetDate), 60000);
+
+  // Initial render
+  updateTimeDisplay(targetDate);
+
   elements.editBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    // hide todo app
     elements.articleEle.style.display = "none";
     elements.formEl.style.display = "block";
   });
 
   elements.cancelEl.addEventListener("click", (e) => {
     e.preventDefault();
-    // hide todo app
     elements.articleEle.style.display = "block";
     elements.formEl.style.display = "none";
   });
 
-  elements.deleteBtn.addEventListener(
-    "click",
-    (e) => (e.preventDefault(), console.log("delete")),
-  );
-
-  // Checkbox logic
-  elements.checkbox.addEventListener("change", (e) => {
-    updateUI(e.target.checked, targetDate);
-  });
-
-  //////// save button event listener
   elements.editSaveBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    // get edited title and description
     handleSave();
-
-    // when the save button is clicked
-    document.getElementById("article-el").style.display = "block";
-    document.getElementById("form").style.display = "none";
-  });
-
-  //////// Cancel button event listener
-  elements.cancelEl.addEventListener("click", (e) => {
-    e.preventDefault();
-    // hide todo app
     elements.articleEle.style.display = "block";
     elements.formEl.style.display = "none";
   });
 
-  // Initial render
-  updateUI(elements.checkbox.checked, targetDate);
-
-
-
-
-///////////////////////////////////////////////// HANDLERS ////////////////////////////////////////////////////////////////////
-    function handleDescriptionChange() {
-      let userEditDesc = document.getElementById("edit-description").value;
-      if (userEditDesc.trim().length > 0) {
-        let mainDesc = document.getElementById("description");
-        mainDesc.textContent = userEditDesc;
-      }
+  function handleSave() {
+    let userTitle = document.getElementById("edit-title").value;
+    if (userTitle.trim().length > 0) {
+      elements.projectTitle.textContent = userTitle;
     }
 
+    let userEditDesc = document.getElementById("edit-description").value;
+    if (userEditDesc.trim().length > 0) {
+      document.getElementById("description").textContent = userEditDesc;
+    }
 
-  function handleSelect() {
-    let priorityElement = document.getElementById("PriorityElement");
-    const select = document.getElementById("edit-priority");
+    let editDateInput = document.getElementById("editDate").value;
+    if (editDateInput) {
+      // 1. Update the actual targetDate object for the countdown
+      targetDate = new Date(editDateInput);
 
-    select.addEventListener("change", (e) => {
-      let userOption = e.target.value;
-      if (userOption.trim().length > 0) {
-        priorityElement.textContent = userOption;
-      }
-    });
-  }
+      // 2. Format the date for the "Due April 20, 2026" display
+      const options = { month: "long", day: "numeric", year: "numeric" };
+      const formattedDate = targetDate.toLocaleDateString("en-US", options);
 
-  function handleDate() {
-    let editDateValue = document.getElementById("editDate");
+      // 3. Update the specific "time-due-date" element
+      const dueDateEl = document.getElementById("time-due-date");
+      dueDateEl.textContent = `Due ${formattedDate}`;
+      dueDateEl.setAttribute("datetime", editDateInput.split("T")[0]);
 
-    editDateValue.addEventListener("change", (e) => {
-      let output = e.target.value;
-      let newTargetDate = new Date(output);
-      let now = new Date();
-      let selectedDueDate = newTargetDate - now;
-
-
-      if (output.trim().length > 0 && selectedDueDate > 0) {
-        let editedMonth = newTargetDate.getMonth() + 1;
-        let editedDay = newTargetDate.getDate();
-        let editedYear = newTargetDate.getFullYear();
-      
-        const months = [
-          "",
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ];
-        const result = `${editedMonth} ${editedDay} ${editedYear}`;
-        const part = result.split(" ");
-        const choosenDate = `${months[part[0]]} ${part[1]},${part[2]}`;
-        document.getElementById("time-due-date").textContent =
-          `Due ${choosenDate}`;
-    
-        let remainingDaysStatus = getStatusMessage(newTargetDate);
-        document.getElementById("time-remaining").textContent =
-          remainingDaysStatus;
-      } else {
-        console.log("choose a day later than today");
-      }
-    });
+      // 4. Update the granular countdown timer
+      updateTimeDisplay(targetDate);
+    }
   }
 
 
-    function handleSave() {
-      let userTitle = document.getElementById("edit-title").value;
-      if (userTitle.trim().length > 0) {
-        let titleContain = document.getElementById("project-title"); // pass value to main UI
-        titleContain.textContent = userTitle; //// pass value to main UI
-      }
+  
+  // Handle Priority
+  const prioritySelect = document.getElementById("edit-priority");
+  const statusBg = document.getElementById("statusDynamicBackground");
+  const priorityText = document.getElementById("PriorityElement");
 
-      handleDescriptionChange();
-      handleDate();
-      handleSelect();
-    }
+  prioritySelect.addEventListener("change", (e) => {
+    const val = e.target.value;
+    if (!val) return;
 
-  handleSave();
+    // Update the text
+    priorityText.textContent = val;
+
+    // Clear old classes before adding the new one
+    statusBg.classList.remove("red", "blue", "black");
+
+    // Add the correct class
+    if (val === "High") statusBg.classList.add("red");
+    else if (val === "Medium") statusBg.classList.add("blue");
+    else if (val === "Low") statusBg.classList.add("black");
+  });
 };;
 
 initApp();

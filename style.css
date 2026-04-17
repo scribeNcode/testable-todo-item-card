@@ -4,27 +4,28 @@
   margin: 0;
 }
 
-html{
+html {
   height: 100%;
   overflow: hidden;
 }
 
 body {
   display: block;
-  height: 100%; 
+  height: 100%;
   overflow: hidden;
   margin: 2rem auto;
-
+  font-family: 'Montserrat', sans-serif;
 }
 
-h1{
+h1 {
   text-align: center;
   margin: 2rem auto;
 }
 
 .app-wrapper {
   width: 100vw;
-  height: 50vh;
+  height: auto;
+  min-height: 50vh;
   padding: 1rem;
 }
 
@@ -48,18 +49,16 @@ button {
   border: 1px solid rgb(129, 126, 126);
 }
 
-.todo-description {
-  padding: 1rem 0;
-  color: #605f5e;
-  margin-top: 2rem;
-}
-
-
-.status-wrapper{
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0.5rem 0 1.5rem;
+  gap: 0.5rem;
+  width: fit-content;
 }
 
-.todo-priority-high {
+.statusDynamicBackground {
   background-color: #ecd2da;
   color: #ed3b36;
   padding: 6px 12px;
@@ -67,10 +66,47 @@ button {
 }
 
 .todo-status-pending {
+  display: inline-block;
   background-color: #c5caf4;
   color: #2c42ea;
   padding: 6px 18px;
   border-radius: 12px;
+}
+
+/* New Overdue Indicator Style */
+#overdue-indicator {
+  background-color: #ff0000;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.overdue-text {
+  color: #ff0000 !important;
+  font-weight: bold;
+}
+
+/* Collapsible Description Styles */
+#collapsible-section.collapsed {
+  max-height: 3em; 
+  overflow: hidden;
+}
+
+#collapsible-section.expanded {
+  max-height: none;
+}
+
+#expand-toggle {
+  border: none;
+  background: none;
+  color: #2c42ea;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  display: block;
 }
 
 .task-tag-wrapper {
@@ -124,27 +160,20 @@ li {
   color: #605f5e;
 }
 
-form{
+form {
   display: none;
 }
 
-
-
-
-/* Tablet and laptop */
+.red { background-color: #ecd2da; }
+.blue { background-color: #c5caf4; }
+.black { background-color: rgb(118, 110, 110); color: white; }
 
 @media screen and (min-width: 768px) {
   body {
-  display: block;
-  height: 100vh; 
-      background: radial-gradient(
-      circle,
-      rgba(197, 202, 244, 1) 0%,
-      rgba(235, 195, 202, 1) 49%,
-      rgba(245, 245, 245, 1) 100%
-    );
-}
- 
+    display: block;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(197, 202, 244, 1) 0%, rgba(235, 195, 202, 1) 49%, rgba(245, 245, 245, 1) 100%);
+  }
   .app-wrapper {
     width: 80%;
     padding: 2rem;
@@ -152,14 +181,6 @@ form{
     background-color: whitesmoke;
     margin: 4rem auto;
   }
-  .todo-description {
-    margin-top: 1rem;
-  }
 }
 
-
-
-
-.hidden{
-  display: none;
-}
+.hidden { display: none !important; }
