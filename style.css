@@ -186,3 +186,75 @@ form {
 }
 
 .hidden { display: none !important; }
+
+/*  (Mobile 320px >>) */
+#form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  width: 95%;
+  margin: 1rem auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#form label {
+  font-weight: 600;
+  margin-bottom: -0.8rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+#form input, 
+#form textarea, 
+#form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+#form button {
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  transition: opacity 0.2s;
+}
+
+#form button:hover {
+  opacity: 0.9;
+}
+
+#edit-saveBtn { background-color: #e68aa5; color: white; }
+#edit-cancelBtn { background-color: rgb(82, 77, 77); color: white; }
+
+/* Tablet Layout (768px >>) */
+@media screen and (min-width: 768px) {
+  #form {
+    width: 80%;
+    padding: 2rem;
+  }
+}
+
+/* Desktop Layout (1024px >>) */
+@media screen and (min-width: 1024px) {
+  #form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 1.5rem;
+    max-width: 800px;
+  }
+
+  /* buttons span both columns */
+  #form label[for="edit-description"],
+  #form textarea,
+  #form #edit-saveBtn,
+  #form #edit-cancelBtn {
+    grid-column: span 2;
+  }
+}

@@ -2,7 +2,10 @@ const MS_PER_MINUTE = 1000 * 60;
 const MS_PER_HOUR = MS_PER_MINUTE * 60;
 const MS_PER_DAY = MS_PER_HOUR * 24;
 
-///////////////    NEW LOGIC FUNCTIONS    ////////////////////////////
+// Move targetDate to top scope so all functions can access it
+let dateValue = "2026-04-20T12:00:00";
+let targetDate = new Date(dateValue);
+
 const getGranularTime = (dueDate) => {
   const now = new Date();
   const diff = dueDate - now;
@@ -26,7 +29,7 @@ const getGranularTime = (dueDate) => {
   }
 };
 
-const updateTimeDisplay = (targetDate) => {
+const updateTimeDisplay = (date) => {
   const isComplete = document.getElementById("complete-checkbox").checked;
   const timeEl = document.getElementById("time-remaining");
   const overdueInd = document.getElementById("overdue-indicator");
@@ -40,10 +43,10 @@ const updateTimeDisplay = (targetDate) => {
     return;
   }
 
-  const message = getGranularTime(targetDate);
+  const message = getGranularTime(date);
   timeEl.textContent = message;
 
-  if (targetDate < new Date()) {
+  if (date < new Date()) {
     timeEl.classList.add("overdue-text");
     overdueInd.classList.remove("hidden");
   } else {
@@ -52,26 +55,19 @@ const updateTimeDisplay = (targetDate) => {
   }
 };
 
-////////////////////////////  UI/DOM ORCHESTRATION /////////////////////////////
 const elements = {
   editBtn: document.getElementById("edit-btn"),
-  deleteBtn: document.getElementById("delete-btn"),
-  timeRemaining: document.getElementById("time-remaining"),
-  projectTitle: document.getElementById("project-title"),
-  status: document.getElementById("todo-status"),
-  checkbox: document.getElementById("complete-checkbox"),
   articleEle: document.getElementById("article-el"),
   formEl: document.getElementById("form"),
   cancelEl: document.getElementById("edit-cancelBtn"),
   editSaveBtn: document.getElementById("edit-saveBtn"),
+  projectTitle: document.getElementById("project-title"),
+  checkbox: document.getElementById("complete-checkbox"),
   expandBtn: document.getElementById("expand-toggle"),
   collapseBox: document.getElementById("collapsible-section"),
 };
 
 const initApp = () => {
-  let dateValue = "2026-04-20T12:00:00";
-  let targetDate = new Date(dateValue);
-
   // Expand/Collapse Listener
   elements.expandBtn.addEventListener("click", () => {
     const isExpanded = elements.collapseBox.classList.toggle("expanded");
@@ -90,29 +86,32 @@ const initApp = () => {
     updateTimeDisplay(targetDate);
   });
 
-  // Timer interval (Updates every 60 seconds)
+  // Timer interval
   setInterval(() => updateTimeDisplay(targetDate), 60000);
 
   // Initial render
   updateTimeDisplay(targetDate);
 
+  // Edit Button Logic (Using classList for responsiveness)
   elements.editBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    elements.articleEle.style.display = "none";
-    elements.formEl.style.display = "block";
+    elements.articleEle.classList.add("hidden");
+    elements.formEl.classList.remove("hidden");
   });
 
+  // Cancel Button Logic
   elements.cancelEl.addEventListener("click", (e) => {
     e.preventDefault();
-    elements.articleEle.style.display = "block";
-    elements.formEl.style.display = "none";
+    elements.formEl.classList.add("hidden");
+    elements.articleEle.classList.remove("hidden");
   });
 
+  // Save Button Logic
   elements.editSaveBtn.addEventListener("click", (e) => {
     e.preventDefault();
     handleSave();
-    elements.articleEle.style.display = "block";
-    elements.formEl.style.display = "none";
+    elements.formEl.classList.add("hidden");
+    elements.articleEle.classList.remove("hidden");
   });
 
   function handleSave() {
@@ -128,24 +127,16 @@ const initApp = () => {
 
     let editDateInput = document.getElementById("editDate").value;
     if (editDateInput) {
-      // 1. Update the actual targetDate object for the countdown
       targetDate = new Date(editDateInput);
-
-      // 2. Format the date for the "Due April 20, 2026" display
       const options = { month: "long", day: "numeric", year: "numeric" };
       const formattedDate = targetDate.toLocaleDateString("en-US", options);
 
-      // 3. Update the specific "time-due-date" element
       const dueDateEl = document.getElementById("time-due-date");
       dueDateEl.textContent = `Due ${formattedDate}`;
       dueDateEl.setAttribute("datetime", editDateInput.split("T")[0]);
-
-      // 4. Update the granular countdown timer
       updateTimeDisplay(targetDate);
     }
   }
-
-
 
   // Handle Priority
   const prioritySelect = document.getElementById("edit-priority");
@@ -155,43 +146,34 @@ const initApp = () => {
   prioritySelect.addEventListener("change", (e) => {
     const val = e.target.value;
     if (!val) return;
-
-    // Update the text
     priorityText.textContent = val;
-
-    // Clear old classes before adding the new one
     statusBg.classList.remove("red", "blue", "black");
-
-    // Add the correct class
     if (val === "High") statusBg.classList.add("red");
     else if (val === "Medium") statusBg.classList.add("blue");
     else if (val === "Low") statusBg.classList.add("black");
   });
-};;
+};
 
-initApp();
-// Locate the dropdown and the status text element
+// Global Status Dropdown Listener (outside initApp to avoid duplicate targetDate scoping issues)
 const statusDropdown = document.getElementById("setStatus");
 const statusTextDisplay = document.getElementById("todo-status");
 
 statusDropdown.addEventListener("change", (e) => {
-    const selectedValue = e.target.value;
-    
-    // Only update if a valid option is picked
-    if (selectedValue.length > 0) {
-        statusTextDisplay.textContent = selectedValue;
-        
-        // Logical Sync: If user selects "Done", check the checkbox automatically
-        const checkbox = document.getElementById("complete-checkbox");
-        if (selectedValue === "Done") {
-            checkbox.checked = true;
-            // Trigger the existing updateUI or strike-through logic
-            document.getElementById("project-title").classList.add("strike-through");
-            updateTimeDisplay(targetDate); // From the new time logic
-        } else {
-            checkbox.checked = false;
-            document.getElementById("project-title").classList.remove("strike-through");
-            updateTimeDisplay(targetDate);
-        }
+  const selectedValue = e.target.value;
+  if (selectedValue.length > 0) {
+    statusTextDisplay.textContent = selectedValue;
+    const checkbox = document.getElementById("complete-checkbox");
+    const title = document.getElementById("project-title");
+
+    if (selectedValue === "Done") {
+      checkbox.checked = true;
+      title.classList.add("strike-through");
+    } else {
+      checkbox.checked = false;
+      title.classList.remove("strike-through");
     }
+    updateTimeDisplay(targetDate);
+  }
 });
+
+initApp();
